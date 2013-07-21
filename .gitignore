@@ -1,0 +1,4 @@
+*.class
+
+program/Cacholic/target/
+program/Cacholic/nbproject/private/
