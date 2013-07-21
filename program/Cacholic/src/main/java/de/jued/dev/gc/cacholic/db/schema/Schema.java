@@ -12,6 +12,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Handle the database Schema
@@ -35,7 +37,8 @@ public class Schema
     private static void upgrade(final Connection connection, final long fromVersion) throws CacholicException
     {
         final long nextVersion = fromVersion + 1;
-        final String nextSchemaFile = String.format("schema_%010d", nextVersion);
+        final String nextSchemaFile = String.format("schema_%010d.sql", nextVersion);
+        //Logger.getLogger(Schema.class.getCanonicalName()).log(Level.INFO, String.format("Trying schema file '%s'", nextSchemaFile));
         InputStream schemaInputStream;
         try
         {
@@ -57,6 +60,7 @@ public class Schema
             // Nothing to do, we're done!
             return;
         }
+        Logger.getLogger(Schema.class.getCanonicalName()).log(Level.INFO, String.format("Updating database to schema '%d'", nextVersion));
         final BufferedReader reader = new BufferedReader(isr);
         final StringBuilder b = new StringBuilder();
         String line = null;
@@ -81,7 +85,7 @@ public class Schema
         Stream.close(bis);
         Stream.close(schemaInputStream);
         final String s = b.toString();
-        final String scripts[] = s.split("\\-\\-\\s::Next:STATEMENT::\\s\\-\\-");
+        final String scripts[] = s.split(";");
         try
         {
             for (final String script : scripts)
@@ -149,6 +153,7 @@ public class Schema
             while (res.next())
             {
                 version = res.getLong("VERSION_NO");
+                Logger.getLogger(Schema.class.getCanonicalName()).log(Level.INFO, "Found schema version '%d'", version);
             }
         }
         catch (SQLException ex)

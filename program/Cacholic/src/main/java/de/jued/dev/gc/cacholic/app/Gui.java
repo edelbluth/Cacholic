@@ -1,7 +1,9 @@
 package de.jued.dev.gc.cacholic.app;
 
 import de.jued.dev.gc.cacholic.Cacholic;
+import de.jued.dev.gc.cacholic.CacholicException;
 import de.jued.dev.gc.cacholic.Constants;
+import de.jued.dev.gc.cacholic.db.FastPath;
 import java.lang.reflect.InvocationTargetException;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -34,6 +36,12 @@ public class Gui extends JFrame
             }
         });
         this.setLocationRelativeTo(this);
+    }
+    
+    public void launch() throws CacholicException
+    {
+        this.setTitle(String.format("%s | DBV: %d", this.getTitle(), FastPath.getDatabaseVersion()));
+        this.setVisible(true);        
     }
     
     public static Gui factory() throws InterruptedException, InvocationTargetException

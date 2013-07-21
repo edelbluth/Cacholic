@@ -71,7 +71,7 @@ public class Cacholic
         // DB URL composing
         final String dbURL = String.format("%s%s", Schema.PROTOCOL, String.format("%s%cDataBase", f.getAbsolutePath(), File.separatorChar).replace(File.separatorChar, '/'));
         final File db = new File(dbURL);
-        final boolean create = !db.exists();
+        final boolean create = !db.isDirectory();
         Schema.check(dbURL, create);
         final HashMap<String, String> dbProperties = new HashMap<String, String>()
         {{
@@ -104,11 +104,21 @@ public class Cacholic
     }
     
     /**
+     * Get the EntityManagerFactory
+     * 
+     * @return The current entity manager factory
+     */
+    public final EntityManagerFactory getEntityManagerFactory()
+    {
+        return this.emf;
+    }
+    
+    /**
      * Launch the application
      */
-    protected void launch()
+    protected void launch() throws CacholicException
     {
-        this.gui.setVisible(true);
+        this.gui.launch();
     }
     
     /**
