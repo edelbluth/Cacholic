@@ -27,7 +27,7 @@ public class ApplicationBootstrap
         {
             Cacholic.setup(cmd).launch();
         }
-        catch (InterruptedException | InvocationTargetException ex)
+        catch (InterruptedException | InvocationTargetException | CacholicException ex)
         {
             Logger.getLogger(ApplicationBootstrap.class.getCanonicalName()).log(Level.SEVERE, "Unable to launch application.", ex);
             System.exit(-1);
