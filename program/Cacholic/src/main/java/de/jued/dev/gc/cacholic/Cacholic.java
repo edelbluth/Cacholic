@@ -1,6 +1,9 @@
 package de.jued.dev.gc.cacholic;
 
+import de.jued.dev.gc.cacholic.app.Gui;
+import de.jued.dev.gc.cacholic.lang.Language;
 import de.jued.dev.lib.libjued.CommandLine;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * This is the main class for the application, instrumentalized by the bootstrap.
@@ -15,6 +18,9 @@ public class Cacholic
     private static Cacholic INSTANCE = null;
     
     private CommandLine commandLine = null;
+    private Gui gui = null;
+    private Language language = null;
+    
     private boolean booting = true;
     
     /**
@@ -32,8 +38,11 @@ public class Cacholic
     /**
      * Initialize the component.
      */
-    private void initialize()
+    private void initialize() throws InterruptedException, InvocationTargetException
     {
+        final String langset = this.commandLine.getValue("lang", Language.DEFAULT_LANGUAGE);
+        this.language = Language.factory(langset);
+        this.gui = Gui.factory();
         this.booting = false;
     }
     
@@ -48,10 +57,40 @@ public class Cacholic
     }
     
     /**
+     * Get the application's language object
+     * 
+     * @return Application Language Object
+     */
+    public final Language getLang()
+    {
+        return this.language;
+    }
+    
+    /**
      * Launch the application
      */
     protected void launch()
     {
+        this.gui.setVisible(true);
+    }
+    
+    /**
+     * Get the instance of the Cacholic with the option to override the boot flag.
+     * 
+     * @param overrideBoot Override the boot flag
+     * @return The instance of the Cacholic
+     */
+    public static Cacholic getInstance(final boolean overrideBoot)
+    {
+        if (null == Cacholic.INSTANCE)
+        {
+            return null;
+        }
+        if ((Cacholic.INSTANCE.booting) && (!overrideBoot))
+        {
+            return null;
+        }
+        return Cacholic.INSTANCE;        
     }
     
     /**
@@ -62,15 +101,7 @@ public class Cacholic
      */
     public static Cacholic getInstance()
     {
-        if (null == Cacholic.INSTANCE)
-        {
-            return null;
-        }
-        if (Cacholic.INSTANCE.booting)
-        {
-            return null;
-        }
-        return Cacholic.INSTANCE;
+        return Cacholic.getInstance(false);
     }
 
     /**
@@ -79,7 +110,7 @@ public class Cacholic
      * @param cmd Command Line Arguments
      * @return The initialized Cacholic App Object.
      */
-    protected static Cacholic setup(final CommandLine cmd)
+    protected static Cacholic setup(final CommandLine cmd) throws InterruptedException, InvocationTargetException
     {
         if (null != Cacholic.INSTANCE)
         {
