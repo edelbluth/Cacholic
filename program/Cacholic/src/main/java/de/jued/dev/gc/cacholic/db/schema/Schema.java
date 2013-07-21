@@ -122,6 +122,7 @@ public class Schema
     {
         if (create)
         {
+            Logger.getLogger(Schema.class.getCanonicalName()).log(Level.INFO, "Starting new Schema by Zero");
             Schema.upgrade(connection, 0L);
             return;
         }
@@ -153,7 +154,7 @@ public class Schema
             while (res.next())
             {
                 version = res.getLong("VERSION_NO");
-                Logger.getLogger(Schema.class.getCanonicalName()).log(Level.INFO, "Found schema version '%d'", version);
+                Logger.getLogger(Schema.class.getCanonicalName()).log(Level.INFO, String.format("Found schema version '%d'", version));
             }
         }
         catch (SQLException ex)

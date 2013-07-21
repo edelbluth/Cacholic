@@ -69,8 +69,9 @@ public class Cacholic
             throw new CacholicException("The default Application Working Directory seems to be a file.");
         }
         // DB URL composing
-        final String dbURL = String.format("%s%s", Schema.PROTOCOL, String.format("%s%cDataBase", f.getAbsolutePath(), File.separatorChar).replace(File.separatorChar, '/'));
-        final File db = new File(dbURL);
+        final String dbFile = String.format("%s%cDataBase", f.getAbsolutePath(), File.separatorChar);
+        final String dbURL = String.format("%s%s", Schema.PROTOCOL, dbFile.replace(File.separatorChar, '/'));
+        final File db = new File(dbFile);
         final boolean create = !db.isDirectory();
         Schema.check(dbURL, create);
         final HashMap<String, String> dbProperties = new HashMap<String, String>()
