@@ -19,6 +19,7 @@ public class Gui extends JFrame
     private Gui()
     {
         super(String.format("%s V%s", Cacholic.getInstance(true).getLang().get("gc.AppName"), Constants.VERSION));
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     }
     
     private void initialize() throws InterruptedException, InvocationTargetException
