@@ -29,7 +29,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass></mainClass>
+                            <mainClass>de.jued.dev.gc.cacholic.ApplicationBootstrap</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
