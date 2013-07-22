@@ -12,7 +12,7 @@ import javax.persistence.Version;
 
 
 /**
- * Database Entity for the Version Table in DB Version 1
+ * Database Entity for the Configuration Table in DB Version 1
  *  
  * @author Juergen Edelbluth <dev@jued.de>
  * @since 0.1
