@@ -2,13 +2,18 @@ package de.jued.dev.gc.cacholic;
 
 import de.jued.dev.gc.cacholic.db.schema.Schema;
 import de.jued.dev.gc.cacholic.app.Gui;
+import de.jued.dev.gc.cacholic.db.Closer;
 import de.jued.dev.gc.cacholic.lang.Language;
 import de.jued.dev.lib.libjued.CommandLine;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * This is the main class for the application, instrumentalized by the bootstrap.
@@ -17,7 +22,7 @@ import javax.persistence.Persistence;
  * @version 0.1
  * @since 0.1
  */
-public class Cacholic
+public class Cacholic implements EventListener
 {
     
     private static Cacholic INSTANCE = null;
@@ -40,6 +45,14 @@ public class Cacholic
     private Cacholic(final CommandLine cmd)
     {
         this.commandLine = cmd;
+        try
+        {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } 
+        catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e)
+        {
+            Logger.getLogger(Cacholic.class.getCanonicalName()).log(Level.WARNING, "Unable to predefine System Look and Feel.", e);
+        }
     }
     
     /**
@@ -80,6 +93,8 @@ public class Cacholic
             put("javax.persistence.jdbc.url", dbURL);
         }};
         this.emf = Persistence.createEntityManagerFactory("CacholicPU", dbProperties);
+        EventMessenger.getInstance().register(Event.EVENT_BEFORE_EXIT, Closer.getInstance());
+        EventMessenger.getInstance().register(Event.EVENT_EXIT, this);
         this.gui = Gui.factory();
         this.booting = false;
     }
@@ -167,6 +182,15 @@ public class Cacholic
         Cacholic.INSTANCE = new Cacholic(cmd);
         Cacholic.INSTANCE.initialize();
         return Cacholic.INSTANCE;
+    }
+
+    @Override
+    public void onEvent(Event evt)
+    {
+        if (evt.getEventType() == Event.EVENT_EXIT)
+        {
+            System.exit(0);
+        }
     }
     
 }

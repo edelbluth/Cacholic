@@ -28,6 +28,8 @@ public class Schema
     public static final String PROTOCOL = "jdbc:derby:";
     public static final String DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
     
+    private static String SHUTDOWN_URL = String.format("%s;shutdown=true", PROTOCOL);
+    
     /**
      * Upgrade to the newest version available
      * 
@@ -204,9 +206,20 @@ public class Schema
             throw new CacholicException("Unable to connect to database.", ex);
         }
         Schema.upgrade(c, create);
+        Schema.SHUTDOWN_URL = String.format("%s;shutdown=true", url);
+        Schema.shutdown();
+    }
+    
+    /**
+     * Shutdown the derby database
+     * 
+     * @throws CacholicException on error
+     */
+    public static void shutdown() throws CacholicException
+    {
         try
         {
-            DriverManager.getConnection(String.format("%s;shutdown=true", url));
+            DriverManager.getConnection(Schema.SHUTDOWN_URL);
         }
         catch (SQLException ex)
         {
@@ -216,7 +229,7 @@ public class Schema
         catch (Exception ex)
         {
             throw new CacholicException("Unable to close database connection.", ex);            
-        }
+        }        
     }
     
 }
