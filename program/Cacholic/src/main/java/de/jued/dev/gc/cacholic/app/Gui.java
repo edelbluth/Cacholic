@@ -85,7 +85,7 @@ public class Gui extends JFrame implements WindowListener
     /**
      * Ask the user if he/she really wants to quit.
      */
-    private void quit()
+    protected void quit()
     {
         final String title = Cacholic.getInstance().getLang().get("gc.closing.title");
         final String message = Cacholic.getInstance().getLang().get("gc.closing.message");

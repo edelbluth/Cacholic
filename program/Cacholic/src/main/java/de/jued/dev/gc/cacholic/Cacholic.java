@@ -130,6 +130,16 @@ public class Cacholic implements EventListener
     }
     
     /**
+     * Get the gui instance
+     * 
+     * @return The GUI instance
+     */
+    public final Gui getGui()
+    {
+        return this.gui;
+    }
+    
+    /**
      * Launch the application
      */
     protected void launch() throws CacholicException
