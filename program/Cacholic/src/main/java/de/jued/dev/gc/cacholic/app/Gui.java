@@ -32,6 +32,7 @@ public class Gui extends JFrame
             @Override
             public void run()
             {
+                me.setJMenuBar(MainMenu.factory());
                 me.pack();
             }
         });
