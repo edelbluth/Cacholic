@@ -71,6 +71,30 @@ public class Gui extends JFrame implements WindowListener
         gui.initialize();
         return gui;
     }
+    
+    /**
+     * Exit the program.
+     */
+    private void exit()
+    {
+        this.dispose();
+        EventMessenger.getInstance().fireEvent(Event.synchronousEventFactory(Event.EVENT_BEFORE_EXIT, null));
+        EventMessenger.getInstance().fireEvent(Event.asynchronousEventFactory(Event.EVENT_EXIT, null));        
+    }
+    
+    /**
+     * Ask the user if he/she really wants to quit.
+     */
+    private void quit()
+    {
+        final String title = Cacholic.getInstance().getLang().get("gc.closing.title");
+        final String message = Cacholic.getInstance().getLang().get("gc.closing.message");
+        final int answer = JOptionPane.showConfirmDialog(this, message, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (answer == JOptionPane.YES_OPTION)
+        {
+            this.exit();
+        }        
+    }
 
     @Override
     public void windowOpened(WindowEvent we)
@@ -80,15 +104,7 @@ public class Gui extends JFrame implements WindowListener
     @Override
     public void windowClosing(WindowEvent we)
     {
-        final String title = Cacholic.getInstance().getLang().get("gc.closing.title");
-        final String message = Cacholic.getInstance().getLang().get("gc.closing.message");
-        final int answer = JOptionPane.showConfirmDialog(this, message, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        if (answer == JOptionPane.YES_OPTION)
-        {
-            this.dispose();
-            EventMessenger.getInstance().fireEvent(Event.synchronousEventFactory(Event.EVENT_BEFORE_EXIT, null));
-            EventMessenger.getInstance().fireEvent(Event.asynchronousEventFactory(Event.EVENT_EXIT, null));
-        }
+        this.quit();
     }
 
     @Override
