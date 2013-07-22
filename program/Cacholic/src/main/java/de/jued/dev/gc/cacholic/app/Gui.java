@@ -6,6 +6,7 @@ import de.jued.dev.gc.cacholic.Constants;
 import de.jued.dev.gc.cacholic.Event;
 import de.jued.dev.gc.cacholic.EventMessenger;
 import de.jued.dev.gc.cacholic.db.FastPath;
+import java.awt.BorderLayout;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.lang.reflect.InvocationTargetException;
@@ -23,6 +24,11 @@ import javax.swing.SwingUtilities;
 public class Gui extends JFrame implements WindowListener
 {
     
+    private MainMenu mainMenu = null;
+    private StatusBar statusBar = null;
+    private ToolBar toolBar = null;
+    private InnerCore innerCore = null;
+    
     private Gui()
     {
         super(String.format("%s V%s", Cacholic.getInstance(true).getLang().get("gc.AppName"), Constants.VERSION));
@@ -37,7 +43,15 @@ public class Gui extends JFrame implements WindowListener
             @Override
             public void run()
             {
-                me.setJMenuBar(MainMenu.factory());
+                me.setLayout(new BorderLayout(0, 0));
+                me.mainMenu = MainMenu.factory();
+                me.setJMenuBar(me.mainMenu);
+                me.statusBar = StatusBar.factory();
+                me.add(me.statusBar, BorderLayout.SOUTH);
+                me.toolBar = ToolBar.factory();
+                me.add(me.toolBar, BorderLayout.NORTH);
+                me.innerCore = InnerCore.factory();
+                me.add(me.innerCore, BorderLayout.CENTER);
                 me.pack();
             }
         });
