@@ -2,4 +2,6 @@ language: java
 jdk:
   - openjdk7
   - oraclejdk7
-script: mvn test
+script:
+  cd program/Cacholic
+  mvn test
