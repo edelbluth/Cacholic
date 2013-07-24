@@ -3,5 +3,4 @@ jdk:
   - openjdk7
   - oraclejdk7
 script:
-  cd program/Cacholic
-  mvn test
+  cd program/Cacholic && mvn test
