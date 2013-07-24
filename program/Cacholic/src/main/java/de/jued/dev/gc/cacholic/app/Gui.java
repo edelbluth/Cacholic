@@ -31,7 +31,7 @@ public class Gui extends JFrame implements WindowListener
     
     private Gui()
     {
-        super(String.format("%s V%s", Cacholic.getInstance(true).getLang().get("gc.AppName"), Constants.VERSION));
+        super(String.format("%s V%s Build %s", Cacholic.getInstance(true).getLang().get("gc.AppName"), Constants.VERSION, Constants.BUILD));
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     }
     

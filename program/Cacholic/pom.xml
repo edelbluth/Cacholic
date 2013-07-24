@@ -10,6 +10,10 @@
     <name>Cacholic</name>
     <url>http://www.jued.de/</url>
     
+    <scm>
+        <developerConnection>scm:git:https://github.com/edelbluth/Cacholic/tree/master/program/Cacholic</developerConnection>
+    </scm>
+    
     <build>
         <plugins>
             <plugin>
@@ -27,7 +31,11 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <mainClass>de.jued.dev.gc.cacholic.ApplicationBootstrap</mainClass>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                         </manifest>
+                        <manifestEntries>
+                            <Implementation-Build>$\{buildNumber}</Implementation-Build>
+                        </manifestEntries>
                     </archive>
                 </configuration>
                 <executions>
@@ -49,8 +57,33 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <version>1.2</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>create</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <doCheck>false</doCheck>
+                    <doUpdate>false</doUpdate>
+                    <format>{0,number}</format>
+                    <items>
+                        <item>buildNumber</item>
+                    </items>
+                    <buildNumberPropertiesFileLocation>${basedir}/src/main/resources/de/jued/dev/gc/cacholic/version.properties</buildNumberPropertiesFileLocation>
+                    <buildNumberPropertyName>buildNumber</buildNumberPropertyName>
+                    <revisionOnScmFailure>git</revisionOnScmFailure>
+                </configuration>
+            </plugin>       
         </plugins>
     </build>
+    
     <repositories>
         <repository>
             <url>http://download.eclipse.org/rt/eclipselink/maven.repo/</url>
@@ -59,6 +92,7 @@
             <name>Repository for library EclipseLink (JPA 2.1)</name>
         </repository>
     </repositories>
+    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -87,7 +121,7 @@
             <artifactId>javax.persistence</artifactId>
             <version>2.1.0-SNAPSHOT</version>
             <scope>compile</scope>
-       </dependency>
+        </dependency>
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.jpa.modelgen.processor</artifactId>
