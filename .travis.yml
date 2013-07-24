@@ -2,4 +2,4 @@ language: java
 jdk:
   - openjdk7
   - oraclejdk7
-script: mvn install --DskipTests=true && mvn test
+script: mvn test
