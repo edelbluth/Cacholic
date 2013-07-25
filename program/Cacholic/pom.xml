@@ -91,6 +91,10 @@
             <layout>default</layout>
             <name>Repository for library EclipseLink (JPA 2.1)</name>
         </repository>
+        <repository>
+            <id>LibJuEd-snapshots</id>
+            <url>https://raw.github.com/edelbluth/libjued/maven-repo/snapshots</url>
+        </repository>
     </repositories>
     
     <properties>
