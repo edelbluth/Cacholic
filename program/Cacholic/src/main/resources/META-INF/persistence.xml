@@ -4,6 +4,7 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>de.jued.dev.gc.cacholic.db.entities.Version</class>
     <class>de.jued.dev.gc.cacholic.db.entities.Config</class>
+    <class>de.jued.dev.gc.cacholic.db.entities.CacheUserFlag</class>
     <properties/>
   </persistence-unit>
 </persistence>
