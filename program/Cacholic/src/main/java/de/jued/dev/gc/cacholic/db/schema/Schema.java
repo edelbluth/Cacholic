@@ -88,6 +88,7 @@ public class Schema
         Stream.close(schemaInputStream);
         final String s = b.toString();
         final String scripts[] = s.split(";");
+        String scr = null;
         try
         {
             for (final String script : scripts)
@@ -96,7 +97,7 @@ public class Schema
                 {
                     continue;
                 }
-                final String scr = script.trim();
+                scr = script.trim();
                 if (scr.length() <= 0)
                 {
                     continue;
@@ -108,7 +109,7 @@ public class Schema
         }
         catch (SQLException ex)
         {
-            throw new CacholicException(String.format("Error upgrading database to version '%d'", nextVersion), ex);
+            throw new CacholicException(String.format("Error upgrading database to version '%d'. This snippet brought the error:\n%s", nextVersion, (null != scr ? scr : "unknown")), ex);
         }
         Schema.upgrade(connection, nextVersion);
     }
