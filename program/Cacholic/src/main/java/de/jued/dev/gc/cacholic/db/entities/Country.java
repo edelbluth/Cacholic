@@ -1,31 +1,33 @@
 package de.jued.dev.gc.cacholic.db.entities;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
- * Entity class for the Cache User Flag
+ * Country Entity
  * 
  * @author Juergen Edelbluth <dev@jued.de>
- * @version 0.1
  * @since 0.1
+ * @version 0.1
  */
-@Entity @Table(name = "CACHE_USER_FLAG")
+@Entity @Table(name = "COUNTRY")
 @NamedQueries({
-    @NamedQuery(name = "CacheUserFlag.findByUUID", query = "select c from CacheUserFlag c where c.uuid=:uuid")
+    @NamedQuery(name = "Country.findByUUID", query = "select c from Country c where c.uuid=:uuid")
 })
-public class CacheUserFlag implements Serializable
+public class Country implements Serializable
 {
     
     @Id @Column(name = "SYS_UUID", insertable = true, nullable = false, updatable = false, length = 16) private byte[] uuid;
-    @Column(name = "FLAG_NAME", insertable = true, nullable = false, unique = true, length = 255) private String name;
-    @Lob @Column(name = "FLAG_DESCIPTION", insertable = true, length = (1 * 1024 * 1024) - 1, nullable = true) private String description;
+    @Column(name = "COUNTRY_NAME", nullable = false, insertable = true, updatable = true, length = 255, unique = true) private String name;
+    @OneToMany(mappedBy = "country", fetch = FetchType.LAZY, targetEntity = CState.class) private List<CState> states;
 
     public byte[] getUuid()
     {
@@ -47,14 +49,14 @@ public class CacheUserFlag implements Serializable
         this.name = name;
     }
 
-    public String getDescription() 
+    public List<CState> getStates() 
     {
-        return description;
+        return states;
     }
 
-    public void setDescription(String description) 
+    public void setStates(List<CState> states) 
     {
-        this.description = description;
+        this.states = states;
     }
-
+    
 }

@@ -3,29 +3,31 @@ package de.jued.dev.gc.cacholic.db.entities;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
- * Entity class for the Cache User Flag
+ * State entity
  * 
  * @author Juergen Edelbluth <dev@jued.de>
  * @version 0.1
  * @since 0.1
  */
-@Entity @Table(name = "CACHE_USER_FLAG")
+@Entity @Table(name = "CSTATE")
 @NamedQueries({
-    @NamedQuery(name = "CacheUserFlag.findByUUID", query = "select c from CacheUserFlag c where c.uuid=:uuid")
+    @NamedQuery(name = "CState.findByUUID", query = "select c from CState c where c.uuid=:uuid")
 })
-public class CacheUserFlag implements Serializable
+public class CState implements Serializable
 {
-    
+
     @Id @Column(name = "SYS_UUID", insertable = true, nullable = false, updatable = false, length = 16) private byte[] uuid;
-    @Column(name = "FLAG_NAME", insertable = true, nullable = false, unique = true, length = 255) private String name;
-    @Lob @Column(name = "FLAG_DESCIPTION", insertable = true, length = (1 * 1024 * 1024) - 1, nullable = true) private String description;
+    @Column(name = "STATE_NAME", nullable = false, insertable = true, updatable = true, length = 255, unique = true) private String name;
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Country.class) @JoinColumn(name = "COUNTRY") private Country country;
 
     public byte[] getUuid()
     {
@@ -37,7 +39,7 @@ public class CacheUserFlag implements Serializable
         this.uuid = uuid;
     }
 
-    public String getName()
+    public String getName() 
     {
         return name;
     }
@@ -47,14 +49,14 @@ public class CacheUserFlag implements Serializable
         this.name = name;
     }
 
-    public String getDescription() 
+    public Country getCountry() 
     {
-        return description;
+        return country;
     }
 
-    public void setDescription(String description) 
+    public void setCountry(Country country)
     {
-        this.description = description;
+        this.country = country;
     }
-
+    
 }
