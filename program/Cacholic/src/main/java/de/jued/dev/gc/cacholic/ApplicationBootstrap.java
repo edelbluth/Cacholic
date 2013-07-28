@@ -219,7 +219,7 @@ public class ApplicationBootstrap
             stderrThread.start();
             stdoutThread.setDaemon(true);
             stdoutThread.start();
-            int returnCode = -1;
+            int returnCode;
             try
             {
                 returnCode = proc.waitFor();
