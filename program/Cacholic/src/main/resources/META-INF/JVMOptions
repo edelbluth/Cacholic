@@ -1,3 +1,2 @@
-#-javaagent:eclipselink.jar
 -Xms32m
 -Xmx1024m
