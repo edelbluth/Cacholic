@@ -91,6 +91,7 @@ public class Cacholic implements EventListener
         {{
             put("javax.persistence.jdbc.driver", Schema.DRIVER);
             put("javax.persistence.jdbc.url", dbURL);
+            put("eclipselink.weaving", "static");
         }};
         this.emf = Persistence.createEntityManagerFactory("CacholicPU", dbProperties);
         EventMessenger.getInstance().register(Event.EVENT_BEFORE_EXIT, Closer.getInstance());
