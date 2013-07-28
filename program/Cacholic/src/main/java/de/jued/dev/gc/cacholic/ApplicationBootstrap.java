@@ -219,9 +219,10 @@ public class ApplicationBootstrap
             stderrThread.start();
             stdoutThread.setDaemon(true);
             stdoutThread.start();
+            int returnCode = -1;
             try
             {
-                proc.waitFor();
+                returnCode = proc.waitFor();
             }
             catch (InterruptedException e)
             {
@@ -235,7 +236,7 @@ public class ApplicationBootstrap
             ApplicationBootstrap.destroyProcess(proc);
             Stream.close(stderr);
             Stream.close(stdout);
-            System.exit(0);
+            System.exit(returnCode);
         }
     }
     
