@@ -13,6 +13,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * The Cacholic Application is an easy to use Geocaching database.
@@ -57,6 +59,17 @@ public class ApplicationBootstrap
         final CommandLine cmd = CommandLine.factory(args);
         if (cmd.isSwitched("bootstrapped"))
         {
+            // Platform-like SWING GUI
+            try
+            {
+                final String systemLookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
+                Logger.getLogger(ApplicationBootstrap.class.getCanonicalName()).log(Level.INFO, String.format("Activating System Look and Feel with UI class '%s'.", systemLookAndFeelClassName));
+                UIManager.setLookAndFeel(systemLookAndFeelClassName);
+            } 
+            catch (NullPointerException | ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e)
+            {
+                Logger.getLogger(ApplicationBootstrap.class.getCanonicalName()).log(Level.WARNING, "Unable to setup system look and feel.", e);                
+            }
             try 
             {
                 Cacholic.setup(cmd).launch();
